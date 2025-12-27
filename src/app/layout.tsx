@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 
 const bricolageGrotesque = Bricolage_Grotesque({
@@ -25,6 +26,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => (
       )}
     >
       {children}
+      <Toaster position="top-center" richColors />
     </body>
   </html>
 );

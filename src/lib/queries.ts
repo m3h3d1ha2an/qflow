@@ -7,3 +7,9 @@ export const getCurrentUser = async () => {
   const result = await auth.api.getSession({ headers: headersList });
   return result?.user;
 };
+
+export const getCurrentSession = async () => {
+  const headersList = await headers();
+  const result = await auth.api.getSession({ headers: headersList });
+  return result?.session;
+};
