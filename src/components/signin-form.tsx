@@ -1,11 +1,16 @@
 "use client";
 import { useForm } from "@tanstack/react-form";
+import { useState } from "react";
 import { toast } from "sonner";
 import z from "zod";
-import { Button } from "@/components/ui/button";
-import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { InputGroupAddon } from "@/components/ui/input-group";
 
 const signInSchema = z.object({
   username: z.string().min(1, { error: "Username is required." }),
@@ -19,6 +24,7 @@ export const SigninForm = () => {
     validators: { onSubmit: signInSchema },
     onSubmit: async ({ value }) => {
       toast.success("Form submitted successfully");
+      console.table(value);
     },
   });
   return (
@@ -32,7 +38,8 @@ export const SigninForm = () => {
         <FieldGroup>
           <form.Field name="username">
             {(field) => {
-              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field orientation="responsive" data-invalid={isInvalid}>
                   <FieldLabel htmlFor={field.name} className="text-sm">
