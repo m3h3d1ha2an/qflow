@@ -10,6 +10,6 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: z.base64("Secret must be a valid standard Base64 string"),
     BETTER_AUTH_URL: z.url("Please provide a valid URL"),
   },
-  client: {},
   experimental__runtimeEnv: process.env,
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 });

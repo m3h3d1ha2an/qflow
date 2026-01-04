@@ -8,6 +8,14 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     autoSignIn: false,
+    requireEmailVerification: true,
+    sendResetPassword: async () => await Promise.resolve(),
+  },
+  emailVerification: {
+    autoSignInAfterVerification: true,
+    sendOnSignIn: true,
+    sendOnSignUp: true,
+    sendVerificationEmail: async () => await Promise.resolve(),
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // Seconds * Minutes * Hours * Days

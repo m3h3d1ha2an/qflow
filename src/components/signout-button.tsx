@@ -2,11 +2,11 @@
 
 import { Logout } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { authClient } from "@/lib/auth/client";
-import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { authClient } from "@/lib/auth/client";
+import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
 
 export const SignoutButton = () => {
@@ -25,7 +25,6 @@ export const SignoutButton = () => {
           toast.error(ctx.error.message);
         },
         onSuccess: () => {
-          toast.success("You’ve logged out. See you soon!");
           router.push("/auth/login");
         },
       },

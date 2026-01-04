@@ -19,11 +19,10 @@ export const LoginForm = () => {
     onSubmit: async ({ value }) => {
       const { data, error } = await authClient.signIn.email(value);
       if (data) {
-        toast.success("Logged in successfully!");
         router.push("/app/dashboard");
       }
       if (error) {
-        toast.error(error.message);
+        toast.error(error.message ?? "Something went wrong");
       }
     },
   });
