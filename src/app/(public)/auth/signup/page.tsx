@@ -14,9 +14,7 @@ const Signup = () => {
           className="mx-auto"
         />
         <CardTitle className="text-lg md:text-xl">Get Started</CardTitle>
-        <CardDescription className="text-xs md:text-sm">
-          Enter your information below to create an account.
-        </CardDescription>
+        <CardDescription className="text-xs md:text-sm">Enter your information below to signup.</CardDescription>
       </CardHeader>
       <CardContent>
         <SignupForm />
