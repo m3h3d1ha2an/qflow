@@ -5,7 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth/client";
+import { authClient } from "@/lib/better-auth/client";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
 

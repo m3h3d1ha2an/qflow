@@ -1,6 +1,6 @@
 "use server";
 import { headers } from "next/headers";
-import { auth } from "@/lib/auth/server";
+import { auth } from "@/lib/better-auth/server";
 
 export const getCurrentUser = async () => {
   const headersList = await headers();

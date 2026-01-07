@@ -7,7 +7,7 @@ import { useAppForm } from "@/components/form/hook";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
-import { authClient } from "@/lib/auth/client";
+import { authClient } from "@/lib/better-auth/client";
 import { loginSchema } from "@/schemas/login";
 import { loginDefaults } from "@/types/login";
 
