@@ -32,7 +32,7 @@ export const SignoutButton = () => {
   };
 
   return (
-    <Button onClick={handleSignout} className="text-sm hover:bg-blue-800" disabled={isSigningOut}>
+    <Button onClick={handleSignout} className="text-sm" disabled={isSigningOut}>
       {isSigningOut ? <Spinner /> : <HugeiconsIcon icon={Logout} className="size-4" />} Sign out
     </Button>
   );

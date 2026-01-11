@@ -17,16 +17,18 @@ export const SignupForm = () => {
     defaultValues: signupDefaults,
     validators: { onSubmit: signupSchema },
     onSubmit: async ({ value }) => {
-      const { data, error } = await authClient.signUp.email(value);
-      if (data) {
-        const newTargetTime = Date.now() + 30 * 1000;
-        localStorage.setItem("email_resend_target", newTargetTime.toString());
-        sessionStorage.setItem("pending_verification_email", data.user.email);
-        router.replace("/auth/verify");
-      }
-      if (error) {
-        toast.error(error.message ?? "Something went wrong");
-      }
+      await authClient.signUp.email(value, {
+        onSuccess: () => {
+          const newTargetTime = Date.now() + 30 * 1000;
+          localStorage.setItem("email_resend_target", newTargetTime.toString());
+          sessionStorage.setItem("pending_verification_email", value.email);
+          router.replace("/auth/verify");
+        },
+        onError: (error) => {
+          console.error(error);
+          toast.error(error.error.message || "Failed to send verification email");
+        },
+      });
     },
   });
 
@@ -45,7 +47,7 @@ export const SignupForm = () => {
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
-            <Button type="submit" className="hover:bg-blue-800 text-base" disabled={!canSubmit}>
+            <Button type="submit" className="text-base" disabled={!canSubmit}>
               {isSubmitting && <Spinner />}
               Create Account
             </Button>

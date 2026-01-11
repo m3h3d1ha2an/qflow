@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { AuthCard } from "@/components/auth-card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/better-auth/client";
 
@@ -75,28 +74,17 @@ const VerifyPage = () => {
   };
 
   return (
-    <Card className="relative w-full max-w-sm overflow-hidden">
-      <CardHeader className="text-center">
-        <Image
-          alt="Logo"
-          height={50}
-          src="https://github.com/m3h3d1ha2an/betterauth-nextjs/blob/main/public/betterauth.png?raw=true"
-          width={50}
-          className="mx-auto"
-        />
-        <CardTitle className="text-lg md:text-xl mt-4">Verify Your Email</CardTitle>
-        <CardDescription className="text-xs md:text-sm">
-          We sent a verification link to your email. Please check your inbox.
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent className="text-center space-y-4">
+    <AuthCard
+      title="Verify Your Email"
+      description="We sent a verification link to your email. Please check your inbox."
+    >
+      <div className="text-center space-y-4">
         <Input type="email" value={email || "Loading..."} className="w-full text-center bg-muted" readOnly />
 
         <Button
           onClick={handleResend}
           disabled={countdown > 0 || !email}
-          className="w-full transition-all duration-300 hover:bg-blue-800"
+          className="w-full transition-all duration-300"
         >
           {countdown > 0 ? `Resend in ${countdown}s` : "Resend"}
         </Button>
@@ -107,8 +95,8 @@ const VerifyPage = () => {
             Change now
           </button>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </AuthCard>
   );
 };
 

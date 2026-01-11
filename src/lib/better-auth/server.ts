@@ -8,10 +8,10 @@ import { db } from "@/lib/prisma";
 import { transporter } from "@/lib/transporter";
 
 const options: Options = {
-  memoryCost: 19456,
-  timeCost: 2,
+  memoryCost: 524288,
+  timeCost: 3,
+  parallelism: 4,
   outputLen: 32,
-  parallelism: 1,
 };
 
 export const auth = betterAuth({
@@ -24,7 +24,7 @@ export const auth = betterAuth({
       verify: async ({ hash, password }) => await verify(hash, password, options),
     },
     requireEmailVerification: true,
-    resetPasswordTokenExpiresIn: 60 * 60 * 24 * 1, // Seconds * Minutes * Hours * Days
+    resetPasswordTokenExpiresIn: 60 * 1, // Seconds * Minutes * Hours * Days
     sendResetPassword: async ({ user: { name, email }, url }) => {
       await transporter.sendMail({
         from: "BetterAuth Organization <support@betterauth-org.com",
@@ -38,7 +38,7 @@ export const auth = betterAuth({
   emailVerification: {
     autoSignInAfterVerification: true,
     sendOnSignUp: true,
-    expiresIn: 60 * 60 * 24 * 1, // Seconds * Minutes * Hours * Days
+    expiresIn: 60 * 60 * 1, // Seconds * Minutes * Hours * Days
     sendVerificationEmail: async ({ user: { name, email }, url }) => {
       await transporter.sendMail({
         from: "BetterAuth Organization <support@betterauth-org.com",

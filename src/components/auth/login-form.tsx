@@ -17,27 +17,30 @@ export const LoginForm = () => {
     defaultValues: loginDefaults,
     validators: { onSubmit: loginSchema },
     onSubmit: async ({ value }) => {
-      const { data, error } = await authClient.signIn.email(value);
-      if (data) {
-        router.push("/app/dashboard");
-      }
-      if (error) {
-        if (error.code === "EMAIL_NOT_VERIFIED") {
-          const toastId = toast.loading("Account not verified. Redirecting...");
+      await authClient.signIn.email(value, {
+        onSuccess: () => {
+          router.push("/app/dashboard");
+        },
+        onError: (error) => {
+          if (error.error.code === "EMAIL_NOT_VERIFIED") {
+            const toastId = toast.loading("Email not verified.", {
+              description: "Redirecting to verification...",
+            });
 
-          // Set your storage items for the Verify page
-          const newTargetTime = Date.now() + 30 * 1000;
-          localStorage.setItem("email_resend_target", newTargetTime.toString());
-          sessionStorage.setItem("pending_verification_email", value.email);
+            // Set your storage items for the Verify page
+            const newTargetTime = Date.now() + 30 * 1000;
+            localStorage.setItem("email_resend_target", newTargetTime.toString());
+            sessionStorage.setItem("pending_verification_email", value.email);
 
-          router.replace("/auth/verify");
-          toast.success("Check your inbox for verification email.", {
-            id: toastId,
-          });
-          return;
-        }
-        toast.error(error.message ?? "Something went wrong");
-      }
+            router.replace("/auth/verify");
+            toast.success("Check your inbox for verification email.", {
+              id: toastId,
+            });
+            return;
+          }
+          toast.error(error.error.message ?? "Something went wrong");
+        },
+      });
     },
   });
   return (
@@ -49,17 +52,13 @@ export const LoginForm = () => {
       }}
     >
       <FieldGroup>
-        <form.AppField name="email">
-          {(field) => <field.Input label="Email" type="email" />}
-        </form.AppField>
-        <form.AppField name="password">
-          {(field) => <field.Input label="Password" type="password" />}
-        </form.AppField>
+        <form.AppField name="email">{(field) => <field.Input label="Email" type="email" />}</form.AppField>
+        <form.AppField name="password">{(field) => <field.Input label="Password" type="password" />}</form.AppField>
         <Field orientation="horizontal">
           <form.AppField name="rememberMe">
             {(field) => <field.Checkbox label="Remember me" horizontal />}
           </form.AppField>
-          <Link href="/auth/reset">
+          <Link href="/auth/forgot">
             <Button type="button" variant="link" className="text-sm">
               Forgot password?
             </Button>
@@ -68,11 +67,7 @@ export const LoginForm = () => {
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
-            <Button
-              type="submit"
-              className="hover:bg-blue-800 text-base"
-              disabled={!canSubmit}
-            >
+            <Button type="submit" className="text-base" disabled={!canSubmit}>
               {isSubmitting && <Spinner />}
               Login
             </Button>
