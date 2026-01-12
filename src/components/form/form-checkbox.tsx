@@ -1,5 +1,5 @@
 import { Activity } from "react";
-import { useFieldContext } from "@/components/form/hook";
+import { useFieldContext } from "@/components/form/form-hooks";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/field";
 

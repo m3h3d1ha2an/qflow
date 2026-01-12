@@ -17,18 +17,21 @@ export const SignupForm = () => {
     defaultValues: signupDefaults,
     validators: { onSubmit: signupSchema },
     onSubmit: async ({ value }) => {
-      await authClient.signUp.email(value, {
-        onSuccess: () => {
-          const newTargetTime = Date.now() + 30 * 1000;
-          localStorage.setItem("email_resend_target", newTargetTime.toString());
-          sessionStorage.setItem("pending_verification_email", value.email);
-          router.replace("/auth/verify");
+      await authClient.signUp.email(
+        { ...value, callbackURL: "/app/dashboard" },
+        {
+          onSuccess: () => {
+            const newTargetTime = Date.now() + 30 * 1000;
+            localStorage.setItem("email_resend_target", newTargetTime.toString());
+            sessionStorage.setItem("pending_verification_email", value.email);
+            router.replace("/auth/verify");
+          },
+          onError: (error) => {
+            console.error(error);
+            toast.error(error.error.message || "Failed to send verification email");
+          },
         },
-        onError: (error) => {
-          console.error(error);
-          toast.error(error.error.message || "Failed to send verification email");
-        },
-      });
+      );
     },
   });
 

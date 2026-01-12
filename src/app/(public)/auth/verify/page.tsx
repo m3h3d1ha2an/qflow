@@ -15,11 +15,23 @@ const VerifyPage = () => {
   const [email, setEmail] = useState<string>("");
   const [countdown, setCountdown] = useState(0);
 
+  const { data, isPending } = authClient.useSession();
+
+  useEffect(() => {
+    if (!isPending && data?.user?.emailVerified) {
+      toast.success("Email verified successfully!");
+      // Cleanup storage and redirect
+      sessionStorage.removeItem("pending_verification_email");
+      localStorage.removeItem("email_resend_target");
+      router.replace("/app/dashboard"); // Redirect to your protected landing page
+    }
+  }, [data, isPending, router]);
+
   // 1. Handle Email Retrieval & Initial Timer
   useEffect(() => {
     const storedEmail = sessionStorage.getItem("pending_verification_email");
 
-    if (!storedEmail) {
+    if (!storedEmail && !isPending && !data) {
       // If the user arrived here by mistake, send them back
       if (typeof window !== "undefined" && window.history.length > 1) {
         router.back();
@@ -28,7 +40,7 @@ const VerifyPage = () => {
       }
       return;
     }
-    setEmail(storedEmail);
+    setEmail(storedEmail || data?.user?.email || "");
 
     // Check if there is a pending countdown from a previous session/refresh
     const targetTime = localStorage.getItem("email_resend_target");
@@ -36,7 +48,7 @@ const VerifyPage = () => {
       const remaining = Math.round((Number(targetTime) - Date.now()) / 1000);
       if (remaining > 0) setCountdown(remaining);
     }
-  }, [router]);
+  }, [data, isPending, router]);
 
   // 2. Countdown Logic
   useEffect(() => {
@@ -49,16 +61,20 @@ const VerifyPage = () => {
   const handleResend = async () => {
     if (countdown > 0 || !email) return;
 
-    const { error } = await authClient.sendVerificationEmail({ email });
-
-    if (!error) {
-      toast.success("Verification email resent!");
-      const newTargetTime = Date.now() + RESEND_COOLDOWN * 1000;
-      localStorage.setItem("email_resend_target", newTargetTime.toString());
-      setCountdown(RESEND_COOLDOWN);
-    } else {
-      toast.error(error.message ?? "Something went wrong");
-    }
+    await authClient.sendVerificationEmail(
+      { email },
+      {
+        onSuccess: () => {
+          toast.success("Verification email resent!");
+          const newTargetTime = Date.now() + RESEND_COOLDOWN * 1000;
+          localStorage.setItem("email_resend_target", newTargetTime.toString());
+          setCountdown(RESEND_COOLDOWN);
+        },
+        onError: (error) => {
+          toast.error(error.error.message ?? "Failed to resend verification email");
+        },
+      },
+    );
   };
 
   const handleChangeEmail = () => {

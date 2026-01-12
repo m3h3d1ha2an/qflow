@@ -1,0 +1,12 @@
+import type { BetterAuthOptions } from "better-auth";
+
+type BetterAuthSession = NonNullable<BetterAuthOptions["session"]>;
+
+export const betterAuthSession: BetterAuthSession = {
+  expiresIn: 60 * 60 * 24 * 7, // Seconds * Minutes * Hours * Days
+  // updateAge: 60 * 60 * 24 * 1, // Seconds * Minutes * Hours * Days
+  cookieCache: {
+    enabled: true,
+    maxAge: 60 * 60 * 1, // Seconds * Minutes * Hours * Days
+  },
+};
