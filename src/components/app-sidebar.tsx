@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  ChevronDown,
-  LeftToRightListStarIcon,
-  LogoutSquare01Icon,
-  MoreVertical,
-  Settings01Icon,
-  User,
-} from "@hugeicons/core-free-icons";
+import { LogoutSquare01Icon, MoreVertical, Settings01Icon, User } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -27,13 +20,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/better-auth/client";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export const AppSidebar = () => {
-  const { isMobile } = useSidebar();
   const { data } = authClient.useSession();
   const user = data?.user ?? { name: "Shadcn", email: "shadcn@example.com" };
   const router = useRouter();
@@ -55,9 +46,10 @@ export const AppSidebar = () => {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="text-xl font-bold [&_svg]:size-5 border">
-              <HugeiconsIcon icon={LeftToRightListStarIcon} />
-              QFlow
+            <SidebarMenuButton>
+              <h2 className="font-semibold text-2xl">
+                Q <span className="font-mono text-xl">Flow Manager Inc</span>
+              </h2>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

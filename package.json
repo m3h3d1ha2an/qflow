@@ -65,6 +65,7 @@
   ],
   "trustedDependencies": [
     "@prisma/engines",
+    "msgpackr-extract",
     "msw",
     "prisma",
     "sharp",

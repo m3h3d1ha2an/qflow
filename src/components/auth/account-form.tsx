@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { toast } from "sonner";
 import z from "zod";
 import { useAppForm } from "@/components/form/form-hooks";
@@ -14,14 +15,17 @@ export const AccountForm = () => {
     onClientUploadComplete: async (res) => {
       const file = res?.[0];
       if (!file) return;
-      await authClient.updateUser({ image: file.ufsUrl }, {
-        onSuccess: () => { 
-          toast.success("Profile picture updated!");
+      await authClient.updateUser(
+        { image: file.ufsUrl },
+        {
+          onSuccess: () => {
+            toast.success("Profile picture updated!");
+          },
+          onError: (error) => {
+            toast.error(error.error.message || "Failed to save image to profile.");
+          },
         },
-        onError: (error) => {
-          toast.error(error.error.message || "Failed to save image to profile.");
-        }
-      })
+      );
     },
     onUploadError: (error) => {
       console.error(error);
@@ -81,7 +85,7 @@ export const AccountForm = () => {
             {isUploading ? (
               <Spinner className="w-8 h-8" />
             ) : data?.user.image ? (
-              <img src={data.user.image} alt="Profile" className="w-full h-full object-cover" />
+              <Image src={data.user.image} alt="Profile" className="w-full h-full object-cover" />
             ) : (
               <span className="text-2xl font-bold uppercase text-muted-foreground">{data?.user.name?.charAt(0)}</span>
             )}
