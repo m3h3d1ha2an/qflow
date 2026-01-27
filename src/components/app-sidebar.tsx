@@ -1,8 +1,9 @@
 "use client";
 
-import { LogoutSquare01Icon, MoreVertical, Settings01Icon, User } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { useRouter } from "next/navigation";
+import { Analytics, Appointment02Icon, LeftToRightListDashIcon, LogoutSquare01Icon, MoreVertical, Queue02Icon, ServiceIcon, Settings01Icon, User, UserGroupIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon, type HugeiconsIconProps } from "@hugeicons/react";
+import type { Route } from "next";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -22,24 +23,60 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/better-auth/client";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+type NavItem = { title: string; url: Route; icon: HugeiconsIconProps["icon"] }
 
 export const AppSidebar = () => {
-  const { data } = authClient.useSession();
-  const user = data?.user ?? { name: "Shadcn", email: "shadcn@example.com" };
   const router = useRouter();
+  const pathname = usePathname();
+  const { data } = authClient.useSession();
+  
+  const user = data?.user ?? { name: "Shadcn", email: "shadcn@example.com" };
+  
   const handleSignout = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onError: (ctx) => {
-          toast.error(ctx.error.message);
-        },
-        onSuccess: () => {
-          router.push("/auth/login");
-        },
+    await authClient.signOut({}, {
+      onError: (ctx) => {
+        toast.error(ctx.error.message);
+      },
+      onSuccess: () => {
+        router.push("/auth/login");
       },
     });
   };
+
+  const navItems:NavItem[] = [
+    {
+      title: "Dashboard",
+      url: "/app/dashboard",
+      icon: Analytics,
+    },
+    {
+      title: "Services",
+      url: "/app/services",
+      icon: ServiceIcon,
+    },
+    {
+      title: "Staff Management",
+      url: "/app/staff",
+      icon: UserGroupIcon,
+    },
+    {
+      title: "Appointments",
+      url: "/app/appointments",
+      icon: Appointment02Icon,
+    },
+    {
+      title: "Waiting Queue",
+      url: "/app/queue",
+      icon: Queue02Icon,
+    },
+    {
+      title: "Activity Log",
+      url: "/app/logs",
+      icon: LeftToRightListDashIcon
+    }
+  ];
 
   return (
     <Sidebar variant="floating">
@@ -55,8 +92,22 @@ export const AppSidebar = () => {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+        <SidebarGroup className="[&_li]:my-1">
+          <SidebarMenu>
+            {navItems.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  isActive={item.url === pathname}
+                  onClick={() => router.push(item.url)}
+                  className="text-base"
+                >
+                  <HugeiconsIcon icon={item.icon} />
+                  {item.title}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
