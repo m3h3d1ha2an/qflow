@@ -21,7 +21,7 @@ const authentication = async ({ req }: { req: Request }) => {
 };
 
 const saveProfilPicture = async ({ file }: { file: UploadedFileData }) => {
-return await auth.api.updateUser({ body: { image: file.ufsUrl } })
+  return await auth.api.updateUser({ body: { image: file.ufsUrl } });
 };
 
 export const ourFileRouter = {
