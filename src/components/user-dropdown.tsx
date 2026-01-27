@@ -19,7 +19,6 @@ import { SettingsDialog } from "./settings-dialog";
 export const UserDropdown = () => {
   const { data } = authClient.useSession();
   const [open, onOpenChange] = useState(false);
-
   const user = data?.user ?? { name: "Shadcn", email: "shadcn@example.com" };
   const router = useRouter();
   const handleSignout = async () => {
@@ -39,12 +38,16 @@ export const UserDropdown = () => {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar className="size-8 rounded-full">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={data?.user.image || "https://github.com/shadcn.png"} />
+            <AvatarFallback>QFlow</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-full">
           <DropdownMenuItem>
+            <Avatar className="size-8 rounded-full">
+              <AvatarImage src={data?.user.image || "https://github.com/shadcn.png"} />
+              <AvatarFallback>QFlow</AvatarFallback>
+            </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="font-medium">{user.name}</span>
               <span className="text-muted-foreground text-xs">{user.email}</span>

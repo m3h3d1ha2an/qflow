@@ -11,8 +11,22 @@ import { authClient } from "@/lib/better-auth/client";
 export const AccountForm = () => {
   const { data } = authClient.useSession();
   const { startUpload, isUploading } = useUploadThing("profilePicture", {
-    // onClientUploadComplete
-    // onUploadProgress
+    onClientUploadComplete: async (res) => {
+      const file = res?.[0];
+      if (!file) return;
+      await authClient.updateUser({ image: file.ufsUrl }, {
+        onSuccess: () => { 
+          toast.success("Profile picture updated!");
+        },
+        onError: (error) => {
+          toast.error(error.error.message || "Failed to save image to profile.");
+        }
+      })
+    },
+    onUploadError: (error) => {
+      console.error(error);
+      toast.error(`Upload failed: ${error.message}`);
+    },
   });
   const form = useAppForm({
     defaultValues: {
@@ -46,19 +60,7 @@ export const AccountForm = () => {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const result = await startUpload([file]);
-    if (result?.[0]) {
-      await authClient.updateUser({
-        fetchOptions: {
-          onSuccess: () => {
-            toast.success("Profile picture updated!");
-          },
-          onError: () => {
-            toast.error("Failed to update image.");
-          },
-        },
-      });
-    }
+    await startUpload([file]);
   };
 
   return (
@@ -68,7 +70,7 @@ export const AccountForm = () => {
         e.stopPropagation();
         form.handleSubmit();
       }}
-      className="w-full px-4"
+      className="w-full px-4 relative"
     >
       <div className="flex flex-col items-center gap-4 mb-6">
         <div className="relative group cursor-pointer">

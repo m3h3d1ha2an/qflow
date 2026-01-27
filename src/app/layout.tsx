@@ -11,8 +11,8 @@ const bricolageGrotesque = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "BetterAuth Organization",
-  description: "Organization implementation for BetterAuth",
+  title: "QFlow",
+  description: "Smart Appointment Manager",
 };
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => (

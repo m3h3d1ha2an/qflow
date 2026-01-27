@@ -1,6 +1,13 @@
 "use client";
 
-import { ChevronDown, LogoutSquare01Icon, MoreVertical, Settings01Icon, User } from "@hugeicons/core-free-icons";
+import {
+  ChevronDown,
+  LeftToRightListStarIcon,
+  LogoutSquare01Icon,
+  MoreVertical,
+  Settings01Icon,
+  User,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -48,24 +55,10 @@ export const AppSidebar = () => {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger render={<SidebarMenuButton />}>
-                <Avatar className="size-8 rounded-full">
-                  <AvatarImage src="https://github.com/better-auth/better-auth/blob/canary/demo/nextjs/public/favicon/apple-touch-icon.png?raw=true" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <span className="text-sm">BetterAuth Inc</span>
-                <HugeiconsIcon icon={ChevronDown} className="ml-auto" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side={isMobile ? "bottom" : "right"} align="end">
-                <DropdownMenuItem>
-                  <span>Acme Inc</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Acme Corp.</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <SidebarMenuButton className="text-xl font-bold [&_svg]:size-5 border">
+              <HugeiconsIcon icon={LeftToRightListStarIcon} />
+              QFlow
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

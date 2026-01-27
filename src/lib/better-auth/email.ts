@@ -10,7 +10,7 @@ type AfterEmailVerificaton = NonNullable<AuthOptions["emailVerification"]>["afte
 
 export const sendResetPasswordEmail: SendResetPasswordEmailFunction = async ({ user: { name, email }, url }) => {
   void transporter.sendMail({
-    from: "BetterAuth Organization <support@betterauth-org.com",
+    from: "QFlow",
     to: email,
     subject: "Reset your password",
     text: await resetPasswordText(name, url, "24 hours"),
@@ -20,7 +20,7 @@ export const sendResetPasswordEmail: SendResetPasswordEmailFunction = async ({ u
 
 export const sendVerificationEmail: SendVerificationEmailFunction = async ({ user: { name, email }, url }) => {
   void transporter.sendMail({
-    from: "BetterAuth Organization <support@betterauth-org.com",
+    from: "QFlow",
     to: email,
     subject: "Verify your email",
     text: await emailVerificationText(name, url, "24 hours"),
@@ -30,9 +30,9 @@ export const sendVerificationEmail: SendVerificationEmailFunction = async ({ use
 
 export const afterEmailVerification: AfterEmailVerificaton = async ({ name, email }) => {
   void transporter.sendMail({
-    from: "BetterAuth Organization <support@betterauth-org.com",
+    from: "QFlow",
     to: email,
-    subject: "Welcome to BetterAuth Organization!",
+    subject: "Welcome to QFlow!",
     text: await welcomeMessageText(name),
     html: await welcomeMessageHtml(name),
   });
