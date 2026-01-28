@@ -38,6 +38,7 @@ import {
 import { authClient } from "@/lib/better-auth/client";
 import { SettingsDialog } from "./settings-dialog";
 
+
 type NavItem = { title: string; url: Route; icon: HugeiconsIconProps["icon"] };
 
 export const AppSidebar = () => {
@@ -45,6 +46,7 @@ export const AppSidebar = () => {
   const pathname = usePathname();
   const { data } = authClient.useSession();
   const [open, onOpenChange] = useState(false);
+
 
   const user = data?.user ?? { name: "Shadcn", email: "shadcn@example.com" };
 
