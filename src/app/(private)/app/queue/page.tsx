@@ -1,9 +1,5 @@
 const WaitingQueue = () => {
-  return (
-    <div>
-      Waiting Queue
-    </div>
-  )
-}
+  return <div>Waiting Queue</div>;
+};
 
-export default WaitingQueue
+export default WaitingQueue;

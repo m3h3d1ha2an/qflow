@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id        String   @id
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -19,8 +19,11 @@ model User {
   username        String?
   displayUsername String?
 
-  sessions Session[]
-  accounts Account[]
+  sessions     Session[]
+  accounts     Account[]
+  services     Service[]
+  staff        Staff[]
+  appointments Appointment[]
 
   @@unique([email])
   @@unique([username])
@@ -28,7 +31,7 @@ model User {
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -46,7 +49,7 @@ model Session {
 }
 
 model Account {
-  id        String   @id
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -68,7 +71,7 @@ model Account {
 }
 
 model Verification {
-  id        String   @id
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -78,4 +81,78 @@ model Verification {
 
   @@index([identifier])
   @@map("verifications")
+}
+
+model Service {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name     String @db.VarChar(100)
+  duration Int
+  required String @db.VarChar(50)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  appointments Appointment[]
+
+  @@unique([name, userId])
+  @@index([required])
+  @@map("services")
+}
+
+model Staff {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name     String      @db.VarChar(100)
+  role     String      @db.VarChar(50)
+  capacity Int         @default(5)
+  status   StaffStatus @default(AVAILABLE)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  appointments Appointment[]
+
+  @@index([role])
+  @@map("staff")
+}
+
+enum StaffStatus {
+  AVAILABLE
+  ON_LEAVE
+}
+
+model Appointment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer String            @db.VarChar(100)
+  datetime DateTime
+  status   AppointmentStatus @default(SCHEDULED)
+
+  assignedId String
+  assigned   Staff  @relation(fields: [assignedId], references: [id], onDelete: Cascade)
+
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([datetime])
+  @@index([userId])
+  @@index([assignedId])
+  @@map("appointments")
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
 }

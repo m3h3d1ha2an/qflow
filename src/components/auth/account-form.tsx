@@ -85,7 +85,7 @@ export const AccountForm = () => {
             {isUploading ? (
               <Spinner className="w-8 h-8" />
             ) : data?.user.image ? (
-              <Image src={data.user.image} alt="Profile" className="w-full h-full object-cover" />
+              <Image src={data.user.image} alt="Profile" fill className="w-full h-full object-cover" />
             ) : (
               <span className="text-2xl font-bold uppercase text-muted-foreground">{data?.user.name?.charAt(0)}</span>
             )}

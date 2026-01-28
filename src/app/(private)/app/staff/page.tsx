@@ -1,9 +1,5 @@
 const StaffManagement = () => {
-  return (
-    <div>
-      Staff Management
-    </div>
-  )
-}
+  return <div>Staff Management</div>;
+};
 
-export default StaffManagement
+export default StaffManagement;
