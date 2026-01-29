@@ -14,6 +14,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon, type HugeiconsIconProps } from "@hugeicons/react";
 import type { Route } from "next";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -30,6 +31,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -38,7 +40,6 @@ import {
 import { authClient } from "@/lib/better-auth/client";
 import { SettingsDialog } from "./settings-dialog";
 
-
 type NavItem = { title: string; url: Route; icon: HugeiconsIconProps["icon"] };
 
 export const AppSidebar = () => {
@@ -46,7 +47,6 @@ export const AppSidebar = () => {
   const pathname = usePathname();
   const { data } = authClient.useSession();
   const [open, onOpenChange] = useState(false);
-
 
   const user = data?.user ?? { name: "Shadcn", email: "shadcn@example.com" };
 
@@ -111,22 +111,24 @@ export const AppSidebar = () => {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup className="[&_li]:my-1">
-            <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    isActive={item.url === pathname}
-                    onClick={() => router.push(item.url)}
-                    className="text-base"
-                  >
-                    <HugeiconsIcon icon={item.icon} />
-                    {item.title}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+        <SidebarContent className="px-2.5">
+          <SidebarGroup className="p-0">
+            <SidebarGroupContent>
+              <SidebarMenu className="[&_li]:my-1">
+                {navItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      isActive={item.url === pathname}
+                      render={<Link href={item.url} />}
+                      className="h-7"
+                    >
+                      <HugeiconsIcon icon={item.icon} className="size-3.5" />
+                      <span className="text-sm">{item.title}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>

@@ -15,9 +15,9 @@ const PrivateLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
-      <main className="w-full mr-6">
+      <main className="w-full mx-2">
         <AppHeader />
-        {children}
+        <div className="border mt-2 p-2">{children}</div>
       </main>
     </SidebarProvider>
   );
