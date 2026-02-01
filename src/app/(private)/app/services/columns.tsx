@@ -1,42 +1,79 @@
 "use client";
 
+import { MoreHorizontal } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import type { ColumnDef } from "@tanstack/react-table";
-import z from "zod";
-
-export const serviceSchema = z.object({
-  id: z.string().optional(),
-  name: z.string().trim().min(1, "Service name is required.").max(100, "Service name cannot exceed 100 characters."),
-  duration: z.coerce
-    .number()
-    .refine((v) => [15, 30, 60].includes(v), { error: "Please select a valid duration: 15, 30, or 60 minutes." }),
-  required: z
-    .string()
-    .trim()
-    .min(1, "Required Staff Type is required.")
-    .max(50, "Required Staff Type cannot exceed 50 characters."),
-});
-
-export type Service = z.infer<typeof serviceSchema>;
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import type { Service } from "@/types/service";
 
 export const serviceColumns: ColumnDef<Service>[] = [
   {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected() || table.getIsSomePageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     id: "SN",
-    header: "S/N",
+    header: () => <p className="text-center font-medium">SN</p>,
     cell: ({ row }) => row.index + 1,
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
     cell: ({ row }) => row.original.name,
   },
   {
     accessorKey: "duration",
-    header: "Duration",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Duration" />,
     cell: ({ row }) => row.original.duration,
   },
   {
     accessorKey: "required",
-    header: "Required Staff Type",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Required Staff Type" />,
     cell: ({ row }) => row.original.required,
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => (
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Button variant="ghost" className="size-8 p-0" size="icon">
+            <span className="sr-only">Open menu</span>
+            <HugeiconsIcon icon={MoreHorizontal} className="size-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.id)}>Copy Service ID</DropdownMenuItem>
+          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
 ];

@@ -1,9 +1,9 @@
 import { Plus } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { DataTable } from "@/components/data-table/data-table";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/prisma";
 import { serviceColumns } from "./columns";
-import { ServiceDataTable } from "./data-table";
 
 const getServices = async () =>
   await db.service.findMany({
@@ -21,8 +21,8 @@ const Services = async () => {
           New Service
         </Button>
       </div>
-      <div className="container mx-auto py-10">
-        <ServiceDataTable columns={serviceColumns} data={services} />
+      <div className="container mx-auto">
+        <DataTable columns={serviceColumns} data={services} />
       </div>
     </div>
   );
