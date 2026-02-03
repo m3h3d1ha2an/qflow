@@ -120,7 +120,7 @@ export const AppSidebar = () => {
                     <SidebarMenuButton
                       isActive={item.url === pathname}
                       render={<Link href={item.url} />}
-                      className="h-7  data-active:bg-black data-active:text-white"
+                      className="h-7  data-active:bg-black data-active:text-white hover:bg-black hover:text-white"
                     >
                       <HugeiconsIcon icon={item.icon} className="size-3.5" />
                       <span className="text-sm">{item.title}</span>

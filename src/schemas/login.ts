@@ -7,3 +7,11 @@ export const loginSchema = z.object({
   password: passwordSchema,
   rememberMe: z.boolean(),
 });
+
+export type Login = z.infer<typeof loginSchema>;
+
+export const loginDefaults: Login = {
+  email: "",
+  password: "",
+  rememberMe: false,
+};

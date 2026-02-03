@@ -1,6 +1,6 @@
 import { Plus } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { DataTable } from "@/components/data-table/data-table";
+import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/prisma";
 import { serviceColumns } from "./columns";

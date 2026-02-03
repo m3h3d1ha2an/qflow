@@ -12,3 +12,5 @@ export const serviceSchema = z.object({
     .min(1, "Required Staff Type is required.")
     .max(50, "Required Staff Type cannot exceed 50 characters."),
 });
+
+export type Service = z.infer<typeof serviceSchema>;

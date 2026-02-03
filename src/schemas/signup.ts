@@ -11,3 +11,11 @@ export const signupSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
 });
+
+export type Signup = z.infer<typeof signupSchema>;
+
+export const signupDefaults: Signup = {
+  name: "",
+  email: "",
+  password: "",
+};
